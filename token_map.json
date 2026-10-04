@@ -1,0 +1,7 @@
+{
+  "aromo": {
+    "token": "sks00",
+    "prompt": "a photo of sks00 corbicular pollen pellet",
+    "output_dir": "models\\aromo"
+  }
+}

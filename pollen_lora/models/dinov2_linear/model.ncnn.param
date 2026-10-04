@@ -1,0 +1,350 @@
+7767517
+348 396
+Input                    in0                      0 1 in0
+MemoryData               vit                      0 1 1 0=384 1=257
+MemoryData               pnnx_unique_0            0 1 2 0=384 1=1
+Convolution              conv_48                  1 1 in0 3 0=384 1=14 11=14 12=1 13=14 14=0 2=1 3=14 4=0 5=1 6=225792
+Reshape                  flatten_221              1 1 3 4 0=256 1=384
+Permute                  transpose_220            1 1 4 5 0=1
+Concat                   cat_0                    2 1 2 5 6 0=0
+BinaryOp                 add_0                    2 1 6 1 7 0=0
+Split                    splitncnn_0              1 2 7 8 9
+LayerNorm                ln_61                    1 1 9 10 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_0                   1 1 10 11 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_0           1 3 11 12 13 14 -23300=3,384,384,-233 1=1
+Reshape                  reshape_147              1 1 12 15 0=64 1=6 2=257
+Permute                  permute_99               1 1 15 16 0=2
+BinaryOp                 mul_1                    1 1 16 17 0=2 1=1 2=0.125
+Reshape                  reshape_148              1 1 13 18 0=64 1=6 2=257
+Reshape                  reshape_149              1 1 14 19 0=64 1=6 2=257
+Permute                  permute_100              1 1 19 20 0=2
+Permute                  permute_101              1 1 18 21 0=3
+MatMul                   matmul_195               2 1 17 21 22
+Softmax                  softmax_87               1 1 22 23 0=2 1=1
+MatMul                   matmul_196               2 1 23 20 24
+Permute                  permute_102              1 1 24 25 0=2
+Reshape                  reshape_150              1 1 25 26 0=384 1=257
+Gemm                     gemm_1                   1 1 26 27 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_1284           0 1 28 0=384 1=1
+BinaryOp                 mul_2                    2 1 27 28 29 0=2
+BinaryOp                 add_3                    2 1 8 29 30 0=0
+Split                    splitncnn_1              1 2 30 31 32
+LayerNorm                ln_62                    1 1 32 33 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_2                   1 1 33 34 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_49                  1 1 34 35
+Gemm                     gemm_3                   1 1 35 36 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_1298           0 1 37 0=384 1=1
+BinaryOp                 mul_4                    2 1 36 37 38 0=2
+BinaryOp                 add_5                    2 1 31 38 39 0=0
+Split                    splitncnn_2              1 2 39 40 41
+LayerNorm                ln_63                    1 1 41 42 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_4                   1 1 42 43 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_1           1 3 43 44 45 46 -23300=3,384,384,-233 1=1
+Reshape                  reshape_151              1 1 44 47 0=64 1=6 2=257
+Permute                  permute_103              1 1 47 48 0=2
+BinaryOp                 mul_6                    1 1 48 49 0=2 1=1 2=0.125
+Reshape                  reshape_152              1 1 45 50 0=64 1=6 2=257
+Reshape                  reshape_153              1 1 46 51 0=64 1=6 2=257
+Permute                  permute_104              1 1 51 52 0=2
+Permute                  permute_105              1 1 50 53 0=3
+MatMul                   matmul_197               2 1 49 53 54
+Softmax                  softmax_88               1 1 54 55 0=2 1=1
+MatMul                   matmul_198               2 1 55 52 56
+Permute                  permute_106              1 1 56 57 0=2
+Reshape                  reshape_154              1 1 57 58 0=384 1=257
+Gemm                     gemm_5                   1 1 58 59 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_1407           0 1 60 0=384 1=1
+BinaryOp                 mul_7                    2 1 59 60 61 0=2
+BinaryOp                 add_8                    2 1 40 61 62 0=0
+Split                    splitncnn_3              1 2 62 63 64
+LayerNorm                ln_64                    1 1 64 65 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_6                   1 1 65 66 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_50                  1 1 66 67
+Gemm                     gemm_7                   1 1 67 68 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_1421           0 1 69 0=384 1=1
+BinaryOp                 mul_9                    2 1 68 69 70 0=2
+BinaryOp                 add_10                   2 1 63 70 71 0=0
+Split                    splitncnn_4              1 2 71 72 73
+LayerNorm                ln_65                    1 1 73 74 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_8                   1 1 74 75 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_2           1 3 75 76 77 78 -23300=3,384,384,-233 1=1
+Reshape                  reshape_155              1 1 76 79 0=64 1=6 2=257
+Permute                  permute_107              1 1 79 80 0=2
+BinaryOp                 mul_11                   1 1 80 81 0=2 1=1 2=0.125
+Reshape                  reshape_156              1 1 77 82 0=64 1=6 2=257
+Reshape                  reshape_157              1 1 78 83 0=64 1=6 2=257
+Permute                  permute_108              1 1 83 84 0=2
+Permute                  permute_109              1 1 82 85 0=3
+MatMul                   matmul_199               2 1 81 85 86
+Softmax                  softmax_89               1 1 86 87 0=2 1=1
+MatMul                   matmul_200               2 1 87 84 88
+Permute                  permute_110              1 1 88 89 0=2
+Reshape                  reshape_158              1 1 89 90 0=384 1=257
+Gemm                     gemm_9                   1 1 90 91 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_1530           0 1 92 0=384 1=1
+BinaryOp                 mul_12                   2 1 91 92 93 0=2
+BinaryOp                 add_13                   2 1 72 93 94 0=0
+Split                    splitncnn_5              1 2 94 95 96
+LayerNorm                ln_66                    1 1 96 97 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_10                  1 1 97 98 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_51                  1 1 98 99
+Gemm                     gemm_11                  1 1 99 100 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_1544           0 1 101 0=384 1=1
+BinaryOp                 mul_14                   2 1 100 101 102 0=2
+BinaryOp                 add_15                   2 1 95 102 103 0=0
+Split                    splitncnn_6              1 2 103 104 105
+LayerNorm                ln_67                    1 1 105 106 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_12                  1 1 106 107 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_3           1 3 107 108 109 110 -23300=3,384,384,-233 1=1
+Reshape                  reshape_159              1 1 108 111 0=64 1=6 2=257
+Permute                  permute_111              1 1 111 112 0=2
+BinaryOp                 mul_16                   1 1 112 113 0=2 1=1 2=0.125
+Reshape                  reshape_160              1 1 109 114 0=64 1=6 2=257
+Reshape                  reshape_161              1 1 110 115 0=64 1=6 2=257
+Permute                  permute_112              1 1 115 116 0=2
+Permute                  permute_113              1 1 114 117 0=3
+MatMul                   matmul_201               2 1 113 117 118
+Softmax                  softmax_90               1 1 118 119 0=2 1=1
+MatMul                   matmul_202               2 1 119 116 120
+Permute                  permute_114              1 1 120 121 0=2
+Reshape                  reshape_162              1 1 121 122 0=384 1=257
+Gemm                     gemm_13                  1 1 122 123 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_1653           0 1 124 0=384 1=1
+BinaryOp                 mul_17                   2 1 123 124 125 0=2
+BinaryOp                 add_18                   2 1 104 125 126 0=0
+Split                    splitncnn_7              1 2 126 127 128
+LayerNorm                ln_68                    1 1 128 129 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_14                  1 1 129 130 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_52                  1 1 130 131
+Gemm                     gemm_15                  1 1 131 132 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_1667           0 1 133 0=384 1=1
+BinaryOp                 mul_19                   2 1 132 133 134 0=2
+BinaryOp                 add_20                   2 1 127 134 135 0=0
+Split                    splitncnn_8              1 2 135 136 137
+LayerNorm                ln_69                    1 1 137 138 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_16                  1 1 138 139 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_4           1 3 139 140 141 142 -23300=3,384,384,-233 1=1
+Reshape                  reshape_163              1 1 140 143 0=64 1=6 2=257
+Permute                  permute_115              1 1 143 144 0=2
+BinaryOp                 mul_21                   1 1 144 145 0=2 1=1 2=0.125
+Reshape                  reshape_164              1 1 141 146 0=64 1=6 2=257
+Reshape                  reshape_165              1 1 142 147 0=64 1=6 2=257
+Permute                  permute_116              1 1 147 148 0=2
+Permute                  permute_117              1 1 146 149 0=3
+MatMul                   matmul_203               2 1 145 149 150
+Softmax                  softmax_91               1 1 150 151 0=2 1=1
+MatMul                   matmul_204               2 1 151 148 152
+Permute                  permute_118              1 1 152 153 0=2
+Reshape                  reshape_166              1 1 153 154 0=384 1=257
+Gemm                     gemm_17                  1 1 154 155 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_1776           0 1 156 0=384 1=1
+BinaryOp                 mul_22                   2 1 155 156 157 0=2
+BinaryOp                 add_23                   2 1 136 157 158 0=0
+Split                    splitncnn_9              1 2 158 159 160
+LayerNorm                ln_70                    1 1 160 161 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_18                  1 1 161 162 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_53                  1 1 162 163
+Gemm                     gemm_19                  1 1 163 164 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_1790           0 1 165 0=384 1=1
+BinaryOp                 mul_24                   2 1 164 165 166 0=2
+BinaryOp                 add_25                   2 1 159 166 167 0=0
+Split                    splitncnn_10             1 2 167 168 169
+LayerNorm                ln_71                    1 1 169 170 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_20                  1 1 170 171 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_5           1 3 171 172 173 174 -23300=3,384,384,-233 1=1
+Reshape                  reshape_167              1 1 172 175 0=64 1=6 2=257
+Permute                  permute_119              1 1 175 176 0=2
+BinaryOp                 mul_26                   1 1 176 177 0=2 1=1 2=0.125
+Reshape                  reshape_168              1 1 173 178 0=64 1=6 2=257
+Reshape                  reshape_169              1 1 174 179 0=64 1=6 2=257
+Permute                  permute_120              1 1 179 180 0=2
+Permute                  permute_121              1 1 178 181 0=3
+MatMul                   matmul_205               2 1 177 181 182
+Softmax                  softmax_92               1 1 182 183 0=2 1=1
+MatMul                   matmul_206               2 1 183 180 184
+Permute                  permute_122              1 1 184 185 0=2
+Reshape                  reshape_170              1 1 185 186 0=384 1=257
+Gemm                     gemm_21                  1 1 186 187 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_1899           0 1 188 0=384 1=1
+BinaryOp                 mul_27                   2 1 187 188 189 0=2
+BinaryOp                 add_28                   2 1 168 189 190 0=0
+Split                    splitncnn_11             1 2 190 191 192
+LayerNorm                ln_72                    1 1 192 193 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_22                  1 1 193 194 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_54                  1 1 194 195
+Gemm                     gemm_23                  1 1 195 196 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_1913           0 1 197 0=384 1=1
+BinaryOp                 mul_29                   2 1 196 197 198 0=2
+BinaryOp                 add_30                   2 1 191 198 199 0=0
+Split                    splitncnn_12             1 2 199 200 201
+LayerNorm                ln_73                    1 1 201 202 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_24                  1 1 202 203 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_6           1 3 203 204 205 206 -23300=3,384,384,-233 1=1
+Reshape                  reshape_171              1 1 204 207 0=64 1=6 2=257
+Permute                  permute_123              1 1 207 208 0=2
+BinaryOp                 mul_31                   1 1 208 209 0=2 1=1 2=0.125
+Reshape                  reshape_172              1 1 205 210 0=64 1=6 2=257
+Reshape                  reshape_173              1 1 206 211 0=64 1=6 2=257
+Permute                  permute_124              1 1 211 212 0=2
+Permute                  permute_125              1 1 210 213 0=3
+MatMul                   matmul_207               2 1 209 213 214
+Softmax                  softmax_93               1 1 214 215 0=2 1=1
+MatMul                   matmul_208               2 1 215 212 216
+Permute                  permute_126              1 1 216 217 0=2
+Reshape                  reshape_174              1 1 217 218 0=384 1=257
+Gemm                     gemm_25                  1 1 218 219 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_2022           0 1 220 0=384 1=1
+BinaryOp                 mul_32                   2 1 219 220 221 0=2
+BinaryOp                 add_33                   2 1 200 221 222 0=0
+Split                    splitncnn_13             1 2 222 223 224
+LayerNorm                ln_74                    1 1 224 225 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_26                  1 1 225 226 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_55                  1 1 226 227
+Gemm                     gemm_27                  1 1 227 228 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_2036           0 1 229 0=384 1=1
+BinaryOp                 mul_34                   2 1 228 229 230 0=2
+BinaryOp                 add_35                   2 1 223 230 231 0=0
+Split                    splitncnn_14             1 2 231 232 233
+LayerNorm                ln_75                    1 1 233 234 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_28                  1 1 234 235 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_7           1 3 235 236 237 238 -23300=3,384,384,-233 1=1
+Reshape                  reshape_175              1 1 236 239 0=64 1=6 2=257
+Permute                  permute_127              1 1 239 240 0=2
+BinaryOp                 mul_36                   1 1 240 241 0=2 1=1 2=0.125
+Reshape                  reshape_176              1 1 237 242 0=64 1=6 2=257
+Reshape                  reshape_177              1 1 238 243 0=64 1=6 2=257
+Permute                  permute_128              1 1 243 244 0=2
+Permute                  permute_129              1 1 242 245 0=3
+MatMul                   matmul_209               2 1 241 245 246
+Softmax                  softmax_94               1 1 246 247 0=2 1=1
+MatMul                   matmul_210               2 1 247 244 248
+Permute                  permute_130              1 1 248 249 0=2
+Reshape                  reshape_178              1 1 249 250 0=384 1=257
+Gemm                     gemm_29                  1 1 250 251 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_2145           0 1 252 0=384 1=1
+BinaryOp                 mul_37                   2 1 251 252 253 0=2
+BinaryOp                 add_38                   2 1 232 253 254 0=0
+Split                    splitncnn_15             1 2 254 255 256
+LayerNorm                ln_76                    1 1 256 257 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_30                  1 1 257 258 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_56                  1 1 258 259
+Gemm                     gemm_31                  1 1 259 260 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_2159           0 1 261 0=384 1=1
+BinaryOp                 mul_39                   2 1 260 261 262 0=2
+BinaryOp                 add_40                   2 1 255 262 263 0=0
+Split                    splitncnn_16             1 2 263 264 265
+LayerNorm                ln_77                    1 1 265 266 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_32                  1 1 266 267 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_8           1 3 267 268 269 270 -23300=3,384,384,-233 1=1
+Reshape                  reshape_179              1 1 268 271 0=64 1=6 2=257
+Permute                  permute_131              1 1 271 272 0=2
+BinaryOp                 mul_41                   1 1 272 273 0=2 1=1 2=0.125
+Reshape                  reshape_180              1 1 269 274 0=64 1=6 2=257
+Reshape                  reshape_181              1 1 270 275 0=64 1=6 2=257
+Permute                  permute_132              1 1 275 276 0=2
+Permute                  permute_133              1 1 274 277 0=3
+MatMul                   matmul_211               2 1 273 277 278
+Softmax                  softmax_95               1 1 278 279 0=2 1=1
+MatMul                   matmul_212               2 1 279 276 280
+Permute                  permute_134              1 1 280 281 0=2
+Reshape                  reshape_182              1 1 281 282 0=384 1=257
+Gemm                     gemm_33                  1 1 282 283 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_2268           0 1 284 0=384 1=1
+BinaryOp                 mul_42                   2 1 283 284 285 0=2
+BinaryOp                 add_43                   2 1 264 285 286 0=0
+Split                    splitncnn_17             1 2 286 287 288
+LayerNorm                ln_78                    1 1 288 289 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_34                  1 1 289 290 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_57                  1 1 290 291
+Gemm                     gemm_35                  1 1 291 292 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_2282           0 1 293 0=384 1=1
+BinaryOp                 mul_44                   2 1 292 293 294 0=2
+BinaryOp                 add_45                   2 1 287 294 295 0=0
+Split                    splitncnn_18             1 2 295 296 297
+LayerNorm                ln_79                    1 1 297 298 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_36                  1 1 298 299 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_9           1 3 299 300 301 302 -23300=3,384,384,-233 1=1
+Reshape                  reshape_183              1 1 300 303 0=64 1=6 2=257
+Permute                  permute_135              1 1 303 304 0=2
+BinaryOp                 mul_46                   1 1 304 305 0=2 1=1 2=0.125
+Reshape                  reshape_184              1 1 301 306 0=64 1=6 2=257
+Reshape                  reshape_185              1 1 302 307 0=64 1=6 2=257
+Permute                  permute_136              1 1 307 308 0=2
+Permute                  permute_137              1 1 306 309 0=3
+MatMul                   matmul_213               2 1 305 309 310
+Softmax                  softmax_96               1 1 310 311 0=2 1=1
+MatMul                   matmul_214               2 1 311 308 312
+Permute                  permute_138              1 1 312 313 0=2
+Reshape                  reshape_186              1 1 313 314 0=384 1=257
+Gemm                     gemm_37                  1 1 314 315 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_2391           0 1 316 0=384 1=1
+BinaryOp                 mul_47                   2 1 315 316 317 0=2
+BinaryOp                 add_48                   2 1 296 317 318 0=0
+Split                    splitncnn_19             1 2 318 319 320
+LayerNorm                ln_80                    1 1 320 321 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_38                  1 1 321 322 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_58                  1 1 322 323
+Gemm                     gemm_39                  1 1 323 324 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_2405           0 1 325 0=384 1=1
+BinaryOp                 mul_49                   2 1 324 325 326 0=2
+BinaryOp                 add_50                   2 1 319 326 327 0=0
+Split                    splitncnn_20             1 2 327 328 329
+LayerNorm                ln_81                    1 1 329 330 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_40                  1 1 330 331 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_10          1 3 331 332 333 334 -23300=3,384,384,-233 1=1
+Reshape                  reshape_187              1 1 332 335 0=64 1=6 2=257
+Permute                  permute_139              1 1 335 336 0=2
+BinaryOp                 mul_51                   1 1 336 337 0=2 1=1 2=0.125
+Reshape                  reshape_188              1 1 333 338 0=64 1=6 2=257
+Reshape                  reshape_189              1 1 334 339 0=64 1=6 2=257
+Permute                  permute_140              1 1 339 340 0=2
+Permute                  permute_141              1 1 338 341 0=3
+MatMul                   matmul_215               2 1 337 341 342
+Softmax                  softmax_97               1 1 342 343 0=2 1=1
+MatMul                   matmul_216               2 1 343 340 344
+Permute                  permute_142              1 1 344 345 0=2
+Reshape                  reshape_190              1 1 345 346 0=384 1=257
+Gemm                     gemm_41                  1 1 346 347 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_2514           0 1 348 0=384 1=1
+BinaryOp                 mul_52                   2 1 347 348 349 0=2
+BinaryOp                 add_53                   2 1 328 349 350 0=0
+Split                    splitncnn_21             1 2 350 351 352
+LayerNorm                ln_82                    1 1 352 353 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_42                  1 1 353 354 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_59                  1 1 354 355
+Gemm                     gemm_43                  1 1 355 356 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_2528           0 1 357 0=384 1=1
+BinaryOp                 mul_54                   2 1 356 357 358 0=2
+BinaryOp                 add_55                   2 1 351 358 359 0=0
+Split                    splitncnn_22             1 2 359 360 361
+LayerNorm                ln_83                    1 1 361 362 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_44                  1 1 362 363 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1152 9=384
+Slice                    tensor_split_11          1 3 363 364 365 366 -23300=3,384,384,-233 1=1
+Reshape                  reshape_191              1 1 364 367 0=64 1=6 2=257
+Permute                  permute_143              1 1 367 368 0=2
+BinaryOp                 mul_56                   1 1 368 369 0=2 1=1 2=0.125
+Reshape                  reshape_192              1 1 365 370 0=64 1=6 2=257
+Reshape                  reshape_193              1 1 366 371 0=64 1=6 2=257
+Permute                  permute_144              1 1 371 372 0=2
+Permute                  permute_145              1 1 370 373 0=3
+MatMul                   matmul_217               2 1 369 373 374
+Softmax                  softmax_98               1 1 374 375 0=2 1=1
+MatMul                   matmul_218               2 1 375 372 376
+Permute                  permute_146              1 1 376 377 0=2
+Reshape                  reshape_194              1 1 377 378 0=384 1=257
+Gemm                     gemm_45                  1 1 378 379 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=384
+MemoryData               pnnx_fold_2637           0 1 380 0=384 1=1
+BinaryOp                 mul_57                   2 1 379 380 381 0=2
+BinaryOp                 add_58                   2 1 360 381 382 0=0
+Split                    splitncnn_23             1 2 382 383 384
+LayerNorm                ln_84                    1 1 384 385 0=384 1=1.000000e-6 2=1
+Gemm                     gemm_46                  1 1 385 386 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=1536 9=384
+GELU                     gelu_60                  1 1 386 387
+Gemm                     gemm_47                  1 1 387 388 10=4 2=0 3=1 4=0 5=1 6=1 7=257 8=384 9=1536
+MemoryData               pnnx_fold_2651           0 1 389 0=384 1=1
+BinaryOp                 mul_59                   2 1 388 389 390 0=2
+BinaryOp                 add_60                   2 1 383 390 391 0=0
+LayerNorm                ln_85                    1 1 391 392 0=384 1=1.000000e-6 2=1
+Crop                     select_0                 1 1 392 393 -23310=1,1 -23311=1,0 -23309=1,0
+Squeeze                  squeeze_219              1 1 393 394 -23303=1,0
+InnerProduct             linear_86                1 1 394 out0 0=3 1=1 2=1152

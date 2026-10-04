@@ -1,0 +1,11 @@
+accelerate>=0.16.0
+diffusers>=0.25.0
+torchvision
+transformers>=4.25.1
+ftfy
+tensorboard
+Jinja2
+peft>=0.18.0
+bitsandbytes>=0.43.0
+scikit-learn
+scipy

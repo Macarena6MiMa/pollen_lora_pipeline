@@ -1,0 +1,302 @@
+7767517
+300 323
+pnnx.Input               pnnx_input_0             0 1 0 #0=(1,3,224,224)f32
+pnnx.Attribute           vit                      0 1 1 @data=(1,257,384)f32 #1=(1,257,384)f32
+pnnx.Attribute           pnnx_unique_0            0 1 2 @data=(1,1,384)f32 #2=(1,1,384)f32
+nn.Conv2d                vit.patch_embed.proj     1 1 0 3 bias=True dilation=(1,1) groups=1 in_channels=3 kernel_size=(14,14) out_channels=384 padding=(0,0) padding_mode=zeros stride=(14,14) @bias=(384)f32 @weight=(384,3,14,14)f32 #0=(1,3,224,224)f32 #3=(1,384,16,16)f32
+torch.flatten            torch.flatten_133        1 1 3 4 end_dim=-1 start_dim=2 $input=3 #3=(1,384,16,16)f32 #4=(1,384,256)f32
+torch.transpose          torch.transpose_134      1 1 4 5 dim0=1 dim1=2 $input=4 #4=(1,384,256)f32 #5=(1,256,384)f32
+torch.cat                torch.cat_12             2 1 2 5 6 dim=1 #2=(1,1,384)f32 #5=(1,256,384)f32 #6=(1,257,384)f32
+pnnx.Expression          pnnx_expr_806            2 1 6 1 7 expr=add(@0,@1) #6=(1,257,384)f32 #1=(1,257,384)f32 #7=(1,257,384)f32
+nn.LayerNorm             ln_0                     1 1 7 8 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=7 #7=(1,257,384)f32 #8=(1,257,384)f32
+nn.Linear                vit.blocks.0.attn.qkv    1 1 8 9 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #8=(1,257,384)f32 #9=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_150         1 3 9 10 11 12 dim=2 indices=(384,768) #9=(1,257,1152)f32 #10=(1,257,384)f32 #11=(1,257,384)f32 #12=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_61        1 1 10 13 shape=(1,257,6,64) $input=10 #10=(1,257,384)f32 #13=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_13        1 1 13 14 dims=(0,2,1,3) $input=13 #13=(1,257,6,64)f32 #14=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_788            1 1 14 15 expr=mul(@0,0.125) #14=(1,6,257,64)f32 #15=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_62        1 1 11 16 shape=(1,257,6,64) $input=11 #11=(1,257,384)f32 #16=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_63        1 1 12 17 shape=(1,257,6,64) $input=12 #12=(1,257,384)f32 #17=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_15        1 1 17 18 dims=(0,2,1,3) $input=17 #17=(1,257,6,64)f32 #18=(1,6,257,64)f32
+Tensor.permute           torch.transpose_135      1 1 16 19 dims=(0,2,3,1) $input=16 #16=(1,257,6,64)f32 #19=(1,6,64,257)f32
+torch.matmul             torch.matmul_257         2 1 15 19 20 $input=15 $other=19 #15=(1,6,257,64)f32 #19=(1,6,64,257)f32 #20=(1,6,257,257)f32
+F.softmax                F.softmax_281            1 1 20 21 dim=-1 $input=20 #20=(1,6,257,257)f32 #21=(1,6,257,257)f32
+torch.matmul             torch.matmul_258         2 1 21 18 22 $input=21 $other=18 #21=(1,6,257,257)f32 #18=(1,6,257,64)f32 #22=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_16        1 1 22 23 dims=(0,2,1,3) $input=22 #22=(1,6,257,64)f32 #23=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_64        1 1 23 24 shape=(1,257,384) $input=23 #23=(1,257,6,64)f32 #24=(1,257,384)f32
+nn.Linear                vit.blocks.0.attn.proj   1 1 24 25 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #24=(1,257,384)f32 #25=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1284           0 1 26 @data=(1,1,384)f32 #26=(1,1,384)f32
+pnnx.Expression          pnnx_expr_749            3 1 7 25 26 27 expr=add(@0,mul(@1,@2)) #7=(1,257,384)f32 #25=(1,257,384)f32 #26=(1,1,384)f32 #27=(1,257,384)f32
+nn.LayerNorm             ln_1                     1 1 27 28 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=27 #27=(1,257,384)f32 #28=(1,257,384)f32
+nn.Linear                vit.blocks.0.mlp.fc1     1 1 28 29 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #28=(1,257,384)f32 #29=(1,257,1536)f32
+nn.GELU                  vit.blocks.0.mlp.act     1 1 29 30 #29=(1,257,1536)f32 #30=(1,257,1536)f32
+nn.Linear                vit.blocks.0.mlp.fc2     1 1 30 31 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #30=(1,257,1536)f32 #31=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1298           0 1 32 @data=(1,1,384)f32 #32=(1,1,384)f32
+pnnx.Expression          pnnx_expr_744            3 1 27 31 32 33 expr=add(@0,mul(@1,@2)) #27=(1,257,384)f32 #31=(1,257,384)f32 #32=(1,1,384)f32 #33=(1,257,384)f32
+nn.LayerNorm             ln_2                     1 1 33 34 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=33 #33=(1,257,384)f32 #34=(1,257,384)f32
+nn.Linear                vit.blocks.1.attn.qkv    1 1 34 35 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #34=(1,257,384)f32 #35=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_159         1 3 35 36 37 38 dim=2 indices=(384,768) #35=(1,257,1152)f32 #36=(1,257,384)f32 #37=(1,257,384)f32 #38=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_67        1 1 36 39 shape=(1,257,6,64) $input=36 #36=(1,257,384)f32 #39=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_17        1 1 39 40 dims=(0,2,1,3) $input=39 #39=(1,257,6,64)f32 #40=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_723            1 1 40 41 expr=mul(@0,0.125) #40=(1,6,257,64)f32 #41=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_68        1 1 37 42 shape=(1,257,6,64) $input=37 #37=(1,257,384)f32 #42=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_69        1 1 38 43 shape=(1,257,6,64) $input=38 #38=(1,257,384)f32 #43=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_19        1 1 43 44 dims=(0,2,1,3) $input=43 #43=(1,257,6,64)f32 #44=(1,6,257,64)f32
+Tensor.permute           torch.transpose_136      1 1 42 45 dims=(0,2,3,1) $input=42 #42=(1,257,6,64)f32 #45=(1,6,64,257)f32
+torch.matmul             torch.matmul_259         2 1 41 45 46 $input=41 $other=45 #41=(1,6,257,64)f32 #45=(1,6,64,257)f32 #46=(1,6,257,257)f32
+F.softmax                F.softmax_282            1 1 46 47 dim=-1 $input=46 #46=(1,6,257,257)f32 #47=(1,6,257,257)f32
+torch.matmul             torch.matmul_260         2 1 47 44 48 $input=47 $other=44 #47=(1,6,257,257)f32 #44=(1,6,257,64)f32 #48=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_20        1 1 48 49 dims=(0,2,1,3) $input=48 #48=(1,6,257,64)f32 #49=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_70        1 1 49 50 shape=(1,257,384) $input=49 #49=(1,257,6,64)f32 #50=(1,257,384)f32
+nn.Linear                vit.blocks.1.attn.proj   1 1 50 51 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #50=(1,257,384)f32 #51=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1407           0 1 52 @data=(1,1,384)f32 #52=(1,1,384)f32
+pnnx.Expression          pnnx_expr_682            3 1 33 51 52 53 expr=add(@0,mul(@1,@2)) #33=(1,257,384)f32 #51=(1,257,384)f32 #52=(1,1,384)f32 #53=(1,257,384)f32
+nn.LayerNorm             ln_3                     1 1 53 54 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=53 #53=(1,257,384)f32 #54=(1,257,384)f32
+nn.Linear                vit.blocks.1.mlp.fc1     1 1 54 55 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #54=(1,257,384)f32 #55=(1,257,1536)f32
+nn.GELU                  vit.blocks.1.mlp.act     1 1 55 56 #55=(1,257,1536)f32 #56=(1,257,1536)f32
+nn.Linear                vit.blocks.1.mlp.fc2     1 1 56 57 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #56=(1,257,1536)f32 #57=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1421           0 1 58 @data=(1,1,384)f32 #58=(1,1,384)f32
+pnnx.Expression          pnnx_expr_677            3 1 53 57 58 59 expr=add(@0,mul(@1,@2)) #53=(1,257,384)f32 #57=(1,257,384)f32 #58=(1,1,384)f32 #59=(1,257,384)f32
+nn.LayerNorm             ln_4                     1 1 59 60 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=59 #59=(1,257,384)f32 #60=(1,257,384)f32
+nn.Linear                vit.blocks.2.attn.qkv    1 1 60 61 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #60=(1,257,384)f32 #61=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_168         1 3 61 62 63 64 dim=2 indices=(384,768) #61=(1,257,1152)f32 #62=(1,257,384)f32 #63=(1,257,384)f32 #64=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_73        1 1 62 65 shape=(1,257,6,64) $input=62 #62=(1,257,384)f32 #65=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_21        1 1 65 66 dims=(0,2,1,3) $input=65 #65=(1,257,6,64)f32 #66=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_656            1 1 66 67 expr=mul(@0,0.125) #66=(1,6,257,64)f32 #67=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_74        1 1 63 68 shape=(1,257,6,64) $input=63 #63=(1,257,384)f32 #68=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_75        1 1 64 69 shape=(1,257,6,64) $input=64 #64=(1,257,384)f32 #69=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_23        1 1 69 70 dims=(0,2,1,3) $input=69 #69=(1,257,6,64)f32 #70=(1,6,257,64)f32
+Tensor.permute           torch.transpose_137      1 1 68 71 dims=(0,2,3,1) $input=68 #68=(1,257,6,64)f32 #71=(1,6,64,257)f32
+torch.matmul             torch.matmul_261         2 1 67 71 72 $input=67 $other=71 #67=(1,6,257,64)f32 #71=(1,6,64,257)f32 #72=(1,6,257,257)f32
+F.softmax                F.softmax_283            1 1 72 73 dim=-1 $input=72 #72=(1,6,257,257)f32 #73=(1,6,257,257)f32
+torch.matmul             torch.matmul_262         2 1 73 70 74 $input=73 $other=70 #73=(1,6,257,257)f32 #70=(1,6,257,64)f32 #74=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_24        1 1 74 75 dims=(0,2,1,3) $input=74 #74=(1,6,257,64)f32 #75=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_76        1 1 75 76 shape=(1,257,384) $input=75 #75=(1,257,6,64)f32 #76=(1,257,384)f32
+nn.Linear                vit.blocks.2.attn.proj   1 1 76 77 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #76=(1,257,384)f32 #77=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1530           0 1 78 @data=(1,1,384)f32 #78=(1,1,384)f32
+pnnx.Expression          pnnx_expr_615            3 1 59 77 78 79 expr=add(@0,mul(@1,@2)) #59=(1,257,384)f32 #77=(1,257,384)f32 #78=(1,1,384)f32 #79=(1,257,384)f32
+nn.LayerNorm             ln_5                     1 1 79 80 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=79 #79=(1,257,384)f32 #80=(1,257,384)f32
+nn.Linear                vit.blocks.2.mlp.fc1     1 1 80 81 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #80=(1,257,384)f32 #81=(1,257,1536)f32
+nn.GELU                  vit.blocks.2.mlp.act     1 1 81 82 #81=(1,257,1536)f32 #82=(1,257,1536)f32
+nn.Linear                vit.blocks.2.mlp.fc2     1 1 82 83 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #82=(1,257,1536)f32 #83=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1544           0 1 84 @data=(1,1,384)f32 #84=(1,1,384)f32
+pnnx.Expression          pnnx_expr_610            3 1 79 83 84 85 expr=add(@0,mul(@1,@2)) #79=(1,257,384)f32 #83=(1,257,384)f32 #84=(1,1,384)f32 #85=(1,257,384)f32
+nn.LayerNorm             ln_6                     1 1 85 86 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=85 #85=(1,257,384)f32 #86=(1,257,384)f32
+nn.Linear                vit.blocks.3.attn.qkv    1 1 86 87 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #86=(1,257,384)f32 #87=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_177         1 3 87 88 89 90 dim=2 indices=(384,768) #87=(1,257,1152)f32 #88=(1,257,384)f32 #89=(1,257,384)f32 #90=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_79        1 1 88 91 shape=(1,257,6,64) $input=88 #88=(1,257,384)f32 #91=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_25        1 1 91 92 dims=(0,2,1,3) $input=91 #91=(1,257,6,64)f32 #92=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_589            1 1 92 93 expr=mul(@0,0.125) #92=(1,6,257,64)f32 #93=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_80        1 1 89 94 shape=(1,257,6,64) $input=89 #89=(1,257,384)f32 #94=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_81        1 1 90 95 shape=(1,257,6,64) $input=90 #90=(1,257,384)f32 #95=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_27        1 1 95 96 dims=(0,2,1,3) $input=95 #95=(1,257,6,64)f32 #96=(1,6,257,64)f32
+Tensor.permute           torch.transpose_138      1 1 94 97 dims=(0,2,3,1) $input=94 #94=(1,257,6,64)f32 #97=(1,6,64,257)f32
+torch.matmul             torch.matmul_263         2 1 93 97 98 $input=93 $other=97 #93=(1,6,257,64)f32 #97=(1,6,64,257)f32 #98=(1,6,257,257)f32
+F.softmax                F.softmax_284            1 1 98 99 dim=-1 $input=98 #98=(1,6,257,257)f32 #99=(1,6,257,257)f32
+torch.matmul             torch.matmul_264         2 1 99 96 100 $input=99 $other=96 #99=(1,6,257,257)f32 #96=(1,6,257,64)f32 #100=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_28        1 1 100 101 dims=(0,2,1,3) $input=100 #100=(1,6,257,64)f32 #101=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_82        1 1 101 102 shape=(1,257,384) $input=101 #101=(1,257,6,64)f32 #102=(1,257,384)f32
+nn.Linear                vit.blocks.3.attn.proj   1 1 102 103 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #102=(1,257,384)f32 #103=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1653           0 1 104 @data=(1,1,384)f32 #104=(1,1,384)f32
+pnnx.Expression          pnnx_expr_548            3 1 85 103 104 105 expr=add(@0,mul(@1,@2)) #85=(1,257,384)f32 #103=(1,257,384)f32 #104=(1,1,384)f32 #105=(1,257,384)f32
+nn.LayerNorm             ln_7                     1 1 105 106 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=105 #105=(1,257,384)f32 #106=(1,257,384)f32
+nn.Linear                vit.blocks.3.mlp.fc1     1 1 106 107 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #106=(1,257,384)f32 #107=(1,257,1536)f32
+nn.GELU                  vit.blocks.3.mlp.act     1 1 107 108 #107=(1,257,1536)f32 #108=(1,257,1536)f32
+nn.Linear                vit.blocks.3.mlp.fc2     1 1 108 109 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #108=(1,257,1536)f32 #109=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1667           0 1 110 @data=(1,1,384)f32 #110=(1,1,384)f32
+pnnx.Expression          pnnx_expr_543            3 1 105 109 110 111 expr=add(@0,mul(@1,@2)) #105=(1,257,384)f32 #109=(1,257,384)f32 #110=(1,1,384)f32 #111=(1,257,384)f32
+nn.LayerNorm             ln_8                     1 1 111 112 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=111 #111=(1,257,384)f32 #112=(1,257,384)f32
+nn.Linear                vit.blocks.4.attn.qkv    1 1 112 113 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #112=(1,257,384)f32 #113=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_186         1 3 113 114 115 116 dim=2 indices=(384,768) #113=(1,257,1152)f32 #114=(1,257,384)f32 #115=(1,257,384)f32 #116=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_85        1 1 114 117 shape=(1,257,6,64) $input=114 #114=(1,257,384)f32 #117=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_29        1 1 117 118 dims=(0,2,1,3) $input=117 #117=(1,257,6,64)f32 #118=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_522            1 1 118 119 expr=mul(@0,0.125) #118=(1,6,257,64)f32 #119=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_86        1 1 115 120 shape=(1,257,6,64) $input=115 #115=(1,257,384)f32 #120=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_87        1 1 116 121 shape=(1,257,6,64) $input=116 #116=(1,257,384)f32 #121=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_31        1 1 121 122 dims=(0,2,1,3) $input=121 #121=(1,257,6,64)f32 #122=(1,6,257,64)f32
+Tensor.permute           torch.transpose_139      1 1 120 123 dims=(0,2,3,1) $input=120 #120=(1,257,6,64)f32 #123=(1,6,64,257)f32
+torch.matmul             torch.matmul_265         2 1 119 123 124 $input=119 $other=123 #119=(1,6,257,64)f32 #123=(1,6,64,257)f32 #124=(1,6,257,257)f32
+F.softmax                F.softmax_285            1 1 124 125 dim=-1 $input=124 #124=(1,6,257,257)f32 #125=(1,6,257,257)f32
+torch.matmul             torch.matmul_266         2 1 125 122 126 $input=125 $other=122 #125=(1,6,257,257)f32 #122=(1,6,257,64)f32 #126=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_32        1 1 126 127 dims=(0,2,1,3) $input=126 #126=(1,6,257,64)f32 #127=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_88        1 1 127 128 shape=(1,257,384) $input=127 #127=(1,257,6,64)f32 #128=(1,257,384)f32
+nn.Linear                vit.blocks.4.attn.proj   1 1 128 129 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #128=(1,257,384)f32 #129=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1776           0 1 130 @data=(1,1,384)f32 #130=(1,1,384)f32
+pnnx.Expression          pnnx_expr_481            3 1 111 129 130 131 expr=add(@0,mul(@1,@2)) #111=(1,257,384)f32 #129=(1,257,384)f32 #130=(1,1,384)f32 #131=(1,257,384)f32
+nn.LayerNorm             ln_9                     1 1 131 132 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=131 #131=(1,257,384)f32 #132=(1,257,384)f32
+nn.Linear                vit.blocks.4.mlp.fc1     1 1 132 133 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #132=(1,257,384)f32 #133=(1,257,1536)f32
+nn.GELU                  vit.blocks.4.mlp.act     1 1 133 134 #133=(1,257,1536)f32 #134=(1,257,1536)f32
+nn.Linear                vit.blocks.4.mlp.fc2     1 1 134 135 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #134=(1,257,1536)f32 #135=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1790           0 1 136 @data=(1,1,384)f32 #136=(1,1,384)f32
+pnnx.Expression          pnnx_expr_476            3 1 131 135 136 137 expr=add(@0,mul(@1,@2)) #131=(1,257,384)f32 #135=(1,257,384)f32 #136=(1,1,384)f32 #137=(1,257,384)f32
+nn.LayerNorm             ln_10                    1 1 137 138 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=137 #137=(1,257,384)f32 #138=(1,257,384)f32
+nn.Linear                vit.blocks.5.attn.qkv    1 1 138 139 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #138=(1,257,384)f32 #139=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_195         1 3 139 140 141 142 dim=2 indices=(384,768) #139=(1,257,1152)f32 #140=(1,257,384)f32 #141=(1,257,384)f32 #142=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_91        1 1 140 143 shape=(1,257,6,64) $input=140 #140=(1,257,384)f32 #143=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_33        1 1 143 144 dims=(0,2,1,3) $input=143 #143=(1,257,6,64)f32 #144=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_455            1 1 144 145 expr=mul(@0,0.125) #144=(1,6,257,64)f32 #145=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_92        1 1 141 146 shape=(1,257,6,64) $input=141 #141=(1,257,384)f32 #146=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_93        1 1 142 147 shape=(1,257,6,64) $input=142 #142=(1,257,384)f32 #147=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_35        1 1 147 148 dims=(0,2,1,3) $input=147 #147=(1,257,6,64)f32 #148=(1,6,257,64)f32
+Tensor.permute           torch.transpose_140      1 1 146 149 dims=(0,2,3,1) $input=146 #146=(1,257,6,64)f32 #149=(1,6,64,257)f32
+torch.matmul             torch.matmul_267         2 1 145 149 150 $input=145 $other=149 #145=(1,6,257,64)f32 #149=(1,6,64,257)f32 #150=(1,6,257,257)f32
+F.softmax                F.softmax_286            1 1 150 151 dim=-1 $input=150 #150=(1,6,257,257)f32 #151=(1,6,257,257)f32
+torch.matmul             torch.matmul_268         2 1 151 148 152 $input=151 $other=148 #151=(1,6,257,257)f32 #148=(1,6,257,64)f32 #152=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_36        1 1 152 153 dims=(0,2,1,3) $input=152 #152=(1,6,257,64)f32 #153=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_94        1 1 153 154 shape=(1,257,384) $input=153 #153=(1,257,6,64)f32 #154=(1,257,384)f32
+nn.Linear                vit.blocks.5.attn.proj   1 1 154 155 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #154=(1,257,384)f32 #155=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1899           0 1 156 @data=(1,1,384)f32 #156=(1,1,384)f32
+pnnx.Expression          pnnx_expr_414            3 1 137 155 156 157 expr=add(@0,mul(@1,@2)) #137=(1,257,384)f32 #155=(1,257,384)f32 #156=(1,1,384)f32 #157=(1,257,384)f32
+nn.LayerNorm             ln_11                    1 1 157 158 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=157 #157=(1,257,384)f32 #158=(1,257,384)f32
+nn.Linear                vit.blocks.5.mlp.fc1     1 1 158 159 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #158=(1,257,384)f32 #159=(1,257,1536)f32
+nn.GELU                  vit.blocks.5.mlp.act     1 1 159 160 #159=(1,257,1536)f32 #160=(1,257,1536)f32
+nn.Linear                vit.blocks.5.mlp.fc2     1 1 160 161 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #160=(1,257,1536)f32 #161=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_1913           0 1 162 @data=(1,1,384)f32 #162=(1,1,384)f32
+pnnx.Expression          pnnx_expr_409            3 1 157 161 162 163 expr=add(@0,mul(@1,@2)) #157=(1,257,384)f32 #161=(1,257,384)f32 #162=(1,1,384)f32 #163=(1,257,384)f32
+nn.LayerNorm             ln_12                    1 1 163 164 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=163 #163=(1,257,384)f32 #164=(1,257,384)f32
+nn.Linear                vit.blocks.6.attn.qkv    1 1 164 165 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #164=(1,257,384)f32 #165=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_204         1 3 165 166 167 168 dim=2 indices=(384,768) #165=(1,257,1152)f32 #166=(1,257,384)f32 #167=(1,257,384)f32 #168=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_97        1 1 166 169 shape=(1,257,6,64) $input=166 #166=(1,257,384)f32 #169=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_37        1 1 169 170 dims=(0,2,1,3) $input=169 #169=(1,257,6,64)f32 #170=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_388            1 1 170 171 expr=mul(@0,0.125) #170=(1,6,257,64)f32 #171=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_98        1 1 167 172 shape=(1,257,6,64) $input=167 #167=(1,257,384)f32 #172=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_99        1 1 168 173 shape=(1,257,6,64) $input=168 #168=(1,257,384)f32 #173=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_39        1 1 173 174 dims=(0,2,1,3) $input=173 #173=(1,257,6,64)f32 #174=(1,6,257,64)f32
+Tensor.permute           torch.transpose_141      1 1 172 175 dims=(0,2,3,1) $input=172 #172=(1,257,6,64)f32 #175=(1,6,64,257)f32
+torch.matmul             torch.matmul_269         2 1 171 175 176 $input=171 $other=175 #171=(1,6,257,64)f32 #175=(1,6,64,257)f32 #176=(1,6,257,257)f32
+F.softmax                F.softmax_287            1 1 176 177 dim=-1 $input=176 #176=(1,6,257,257)f32 #177=(1,6,257,257)f32
+torch.matmul             torch.matmul_270         2 1 177 174 178 $input=177 $other=174 #177=(1,6,257,257)f32 #174=(1,6,257,64)f32 #178=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_40        1 1 178 179 dims=(0,2,1,3) $input=178 #178=(1,6,257,64)f32 #179=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_100       1 1 179 180 shape=(1,257,384) $input=179 #179=(1,257,6,64)f32 #180=(1,257,384)f32
+nn.Linear                vit.blocks.6.attn.proj   1 1 180 181 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #180=(1,257,384)f32 #181=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2022           0 1 182 @data=(1,1,384)f32 #182=(1,1,384)f32
+pnnx.Expression          pnnx_expr_347            3 1 163 181 182 183 expr=add(@0,mul(@1,@2)) #163=(1,257,384)f32 #181=(1,257,384)f32 #182=(1,1,384)f32 #183=(1,257,384)f32
+nn.LayerNorm             ln_13                    1 1 183 184 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=183 #183=(1,257,384)f32 #184=(1,257,384)f32
+nn.Linear                vit.blocks.6.mlp.fc1     1 1 184 185 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #184=(1,257,384)f32 #185=(1,257,1536)f32
+nn.GELU                  vit.blocks.6.mlp.act     1 1 185 186 #185=(1,257,1536)f32 #186=(1,257,1536)f32
+nn.Linear                vit.blocks.6.mlp.fc2     1 1 186 187 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #186=(1,257,1536)f32 #187=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2036           0 1 188 @data=(1,1,384)f32 #188=(1,1,384)f32
+pnnx.Expression          pnnx_expr_342            3 1 183 187 188 189 expr=add(@0,mul(@1,@2)) #183=(1,257,384)f32 #187=(1,257,384)f32 #188=(1,1,384)f32 #189=(1,257,384)f32
+nn.LayerNorm             ln_14                    1 1 189 190 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=189 #189=(1,257,384)f32 #190=(1,257,384)f32
+nn.Linear                vit.blocks.7.attn.qkv    1 1 190 191 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #190=(1,257,384)f32 #191=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_213         1 3 191 192 193 194 dim=2 indices=(384,768) #191=(1,257,1152)f32 #192=(1,257,384)f32 #193=(1,257,384)f32 #194=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_103       1 1 192 195 shape=(1,257,6,64) $input=192 #192=(1,257,384)f32 #195=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_41        1 1 195 196 dims=(0,2,1,3) $input=195 #195=(1,257,6,64)f32 #196=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_321            1 1 196 197 expr=mul(@0,0.125) #196=(1,6,257,64)f32 #197=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_104       1 1 193 198 shape=(1,257,6,64) $input=193 #193=(1,257,384)f32 #198=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_105       1 1 194 199 shape=(1,257,6,64) $input=194 #194=(1,257,384)f32 #199=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_43        1 1 199 200 dims=(0,2,1,3) $input=199 #199=(1,257,6,64)f32 #200=(1,6,257,64)f32
+Tensor.permute           torch.transpose_142      1 1 198 201 dims=(0,2,3,1) $input=198 #198=(1,257,6,64)f32 #201=(1,6,64,257)f32
+torch.matmul             torch.matmul_271         2 1 197 201 202 $input=197 $other=201 #197=(1,6,257,64)f32 #201=(1,6,64,257)f32 #202=(1,6,257,257)f32
+F.softmax                F.softmax_288            1 1 202 203 dim=-1 $input=202 #202=(1,6,257,257)f32 #203=(1,6,257,257)f32
+torch.matmul             torch.matmul_272         2 1 203 200 204 $input=203 $other=200 #203=(1,6,257,257)f32 #200=(1,6,257,64)f32 #204=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_44        1 1 204 205 dims=(0,2,1,3) $input=204 #204=(1,6,257,64)f32 #205=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_106       1 1 205 206 shape=(1,257,384) $input=205 #205=(1,257,6,64)f32 #206=(1,257,384)f32
+nn.Linear                vit.blocks.7.attn.proj   1 1 206 207 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #206=(1,257,384)f32 #207=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2145           0 1 208 @data=(1,1,384)f32 #208=(1,1,384)f32
+pnnx.Expression          pnnx_expr_280            3 1 189 207 208 209 expr=add(@0,mul(@1,@2)) #189=(1,257,384)f32 #207=(1,257,384)f32 #208=(1,1,384)f32 #209=(1,257,384)f32
+nn.LayerNorm             ln_15                    1 1 209 210 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=209 #209=(1,257,384)f32 #210=(1,257,384)f32
+nn.Linear                vit.blocks.7.mlp.fc1     1 1 210 211 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #210=(1,257,384)f32 #211=(1,257,1536)f32
+nn.GELU                  vit.blocks.7.mlp.act     1 1 211 212 #211=(1,257,1536)f32 #212=(1,257,1536)f32
+nn.Linear                vit.blocks.7.mlp.fc2     1 1 212 213 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #212=(1,257,1536)f32 #213=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2159           0 1 214 @data=(1,1,384)f32 #214=(1,1,384)f32
+pnnx.Expression          pnnx_expr_275            3 1 209 213 214 215 expr=add(@0,mul(@1,@2)) #209=(1,257,384)f32 #213=(1,257,384)f32 #214=(1,1,384)f32 #215=(1,257,384)f32
+nn.LayerNorm             ln_16                    1 1 215 216 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=215 #215=(1,257,384)f32 #216=(1,257,384)f32
+nn.Linear                vit.blocks.8.attn.qkv    1 1 216 217 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #216=(1,257,384)f32 #217=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_222         1 3 217 218 219 220 dim=2 indices=(384,768) #217=(1,257,1152)f32 #218=(1,257,384)f32 #219=(1,257,384)f32 #220=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_109       1 1 218 221 shape=(1,257,6,64) $input=218 #218=(1,257,384)f32 #221=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_45        1 1 221 222 dims=(0,2,1,3) $input=221 #221=(1,257,6,64)f32 #222=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_254            1 1 222 223 expr=mul(@0,0.125) #222=(1,6,257,64)f32 #223=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_110       1 1 219 224 shape=(1,257,6,64) $input=219 #219=(1,257,384)f32 #224=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_111       1 1 220 225 shape=(1,257,6,64) $input=220 #220=(1,257,384)f32 #225=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_47        1 1 225 226 dims=(0,2,1,3) $input=225 #225=(1,257,6,64)f32 #226=(1,6,257,64)f32
+Tensor.permute           torch.transpose_143      1 1 224 227 dims=(0,2,3,1) $input=224 #224=(1,257,6,64)f32 #227=(1,6,64,257)f32
+torch.matmul             torch.matmul_273         2 1 223 227 228 $input=223 $other=227 #223=(1,6,257,64)f32 #227=(1,6,64,257)f32 #228=(1,6,257,257)f32
+F.softmax                F.softmax_289            1 1 228 229 dim=-1 $input=228 #228=(1,6,257,257)f32 #229=(1,6,257,257)f32
+torch.matmul             torch.matmul_274         2 1 229 226 230 $input=229 $other=226 #229=(1,6,257,257)f32 #226=(1,6,257,64)f32 #230=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_48        1 1 230 231 dims=(0,2,1,3) $input=230 #230=(1,6,257,64)f32 #231=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_112       1 1 231 232 shape=(1,257,384) $input=231 #231=(1,257,6,64)f32 #232=(1,257,384)f32
+nn.Linear                vit.blocks.8.attn.proj   1 1 232 233 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #232=(1,257,384)f32 #233=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2268           0 1 234 @data=(1,1,384)f32 #234=(1,1,384)f32
+pnnx.Expression          pnnx_expr_213            3 1 215 233 234 235 expr=add(@0,mul(@1,@2)) #215=(1,257,384)f32 #233=(1,257,384)f32 #234=(1,1,384)f32 #235=(1,257,384)f32
+nn.LayerNorm             ln_17                    1 1 235 236 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=235 #235=(1,257,384)f32 #236=(1,257,384)f32
+nn.Linear                vit.blocks.8.mlp.fc1     1 1 236 237 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #236=(1,257,384)f32 #237=(1,257,1536)f32
+nn.GELU                  vit.blocks.8.mlp.act     1 1 237 238 #237=(1,257,1536)f32 #238=(1,257,1536)f32
+nn.Linear                vit.blocks.8.mlp.fc2     1 1 238 239 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #238=(1,257,1536)f32 #239=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2282           0 1 240 @data=(1,1,384)f32 #240=(1,1,384)f32
+pnnx.Expression          pnnx_expr_208            3 1 235 239 240 241 expr=add(@0,mul(@1,@2)) #235=(1,257,384)f32 #239=(1,257,384)f32 #240=(1,1,384)f32 #241=(1,257,384)f32
+nn.LayerNorm             ln_18                    1 1 241 242 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=241 #241=(1,257,384)f32 #242=(1,257,384)f32
+nn.Linear                vit.blocks.9.attn.qkv    1 1 242 243 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #242=(1,257,384)f32 #243=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_231         1 3 243 244 245 246 dim=2 indices=(384,768) #243=(1,257,1152)f32 #244=(1,257,384)f32 #245=(1,257,384)f32 #246=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_115       1 1 244 247 shape=(1,257,6,64) $input=244 #244=(1,257,384)f32 #247=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_49        1 1 247 248 dims=(0,2,1,3) $input=247 #247=(1,257,6,64)f32 #248=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_187            1 1 248 249 expr=mul(@0,0.125) #248=(1,6,257,64)f32 #249=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_116       1 1 245 250 shape=(1,257,6,64) $input=245 #245=(1,257,384)f32 #250=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_117       1 1 246 251 shape=(1,257,6,64) $input=246 #246=(1,257,384)f32 #251=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_51        1 1 251 252 dims=(0,2,1,3) $input=251 #251=(1,257,6,64)f32 #252=(1,6,257,64)f32
+Tensor.permute           torch.transpose_144      1 1 250 253 dims=(0,2,3,1) $input=250 #250=(1,257,6,64)f32 #253=(1,6,64,257)f32
+torch.matmul             torch.matmul_275         2 1 249 253 254 $input=249 $other=253 #249=(1,6,257,64)f32 #253=(1,6,64,257)f32 #254=(1,6,257,257)f32
+F.softmax                F.softmax_290            1 1 254 255 dim=-1 $input=254 #254=(1,6,257,257)f32 #255=(1,6,257,257)f32
+torch.matmul             torch.matmul_276         2 1 255 252 256 $input=255 $other=252 #255=(1,6,257,257)f32 #252=(1,6,257,64)f32 #256=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_52        1 1 256 257 dims=(0,2,1,3) $input=256 #256=(1,6,257,64)f32 #257=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_118       1 1 257 258 shape=(1,257,384) $input=257 #257=(1,257,6,64)f32 #258=(1,257,384)f32
+nn.Linear                vit.blocks.9.attn.proj   1 1 258 259 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #258=(1,257,384)f32 #259=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2391           0 1 260 @data=(1,1,384)f32 #260=(1,1,384)f32
+pnnx.Expression          pnnx_expr_146            3 1 241 259 260 261 expr=add(@0,mul(@1,@2)) #241=(1,257,384)f32 #259=(1,257,384)f32 #260=(1,1,384)f32 #261=(1,257,384)f32
+nn.LayerNorm             ln_19                    1 1 261 262 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=261 #261=(1,257,384)f32 #262=(1,257,384)f32
+nn.Linear                vit.blocks.9.mlp.fc1     1 1 262 263 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #262=(1,257,384)f32 #263=(1,257,1536)f32
+nn.GELU                  vit.blocks.9.mlp.act     1 1 263 264 #263=(1,257,1536)f32 #264=(1,257,1536)f32
+nn.Linear                vit.blocks.9.mlp.fc2     1 1 264 265 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #264=(1,257,1536)f32 #265=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2405           0 1 266 @data=(1,1,384)f32 #266=(1,1,384)f32
+pnnx.Expression          pnnx_expr_141            3 1 261 265 266 267 expr=add(@0,mul(@1,@2)) #261=(1,257,384)f32 #265=(1,257,384)f32 #266=(1,1,384)f32 #267=(1,257,384)f32
+nn.LayerNorm             ln_20                    1 1 267 268 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=267 #267=(1,257,384)f32 #268=(1,257,384)f32
+nn.Linear                vit.blocks.10.attn.qkv   1 1 268 269 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #268=(1,257,384)f32 #269=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_240         1 3 269 270 271 272 dim=2 indices=(384,768) #269=(1,257,1152)f32 #270=(1,257,384)f32 #271=(1,257,384)f32 #272=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_121       1 1 270 273 shape=(1,257,6,64) $input=270 #270=(1,257,384)f32 #273=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_53        1 1 273 274 dims=(0,2,1,3) $input=273 #273=(1,257,6,64)f32 #274=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_120            1 1 274 275 expr=mul(@0,0.125) #274=(1,6,257,64)f32 #275=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_122       1 1 271 276 shape=(1,257,6,64) $input=271 #271=(1,257,384)f32 #276=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_123       1 1 272 277 shape=(1,257,6,64) $input=272 #272=(1,257,384)f32 #277=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_55        1 1 277 278 dims=(0,2,1,3) $input=277 #277=(1,257,6,64)f32 #278=(1,6,257,64)f32
+Tensor.permute           torch.transpose_145      1 1 276 279 dims=(0,2,3,1) $input=276 #276=(1,257,6,64)f32 #279=(1,6,64,257)f32
+torch.matmul             torch.matmul_277         2 1 275 279 280 $input=275 $other=279 #275=(1,6,257,64)f32 #279=(1,6,64,257)f32 #280=(1,6,257,257)f32
+F.softmax                F.softmax_291            1 1 280 281 dim=-1 $input=280 #280=(1,6,257,257)f32 #281=(1,6,257,257)f32
+torch.matmul             torch.matmul_278         2 1 281 278 282 $input=281 $other=278 #281=(1,6,257,257)f32 #278=(1,6,257,64)f32 #282=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_56        1 1 282 283 dims=(0,2,1,3) $input=282 #282=(1,6,257,64)f32 #283=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_124       1 1 283 284 shape=(1,257,384) $input=283 #283=(1,257,6,64)f32 #284=(1,257,384)f32
+nn.Linear                vit.blocks.10.attn.proj  1 1 284 285 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #284=(1,257,384)f32 #285=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2514           0 1 286 @data=(1,1,384)f32 #286=(1,1,384)f32
+pnnx.Expression          pnnx_expr_79             3 1 267 285 286 287 expr=add(@0,mul(@1,@2)) #267=(1,257,384)f32 #285=(1,257,384)f32 #286=(1,1,384)f32 #287=(1,257,384)f32
+nn.LayerNorm             ln_21                    1 1 287 288 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=287 #287=(1,257,384)f32 #288=(1,257,384)f32
+nn.Linear                vit.blocks.10.mlp.fc1    1 1 288 289 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #288=(1,257,384)f32 #289=(1,257,1536)f32
+nn.GELU                  vit.blocks.10.mlp.act    1 1 289 290 #289=(1,257,1536)f32 #290=(1,257,1536)f32
+nn.Linear                vit.blocks.10.mlp.fc2    1 1 290 291 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #290=(1,257,1536)f32 #291=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2528           0 1 292 @data=(1,1,384)f32 #292=(1,1,384)f32
+pnnx.Expression          pnnx_expr_74             3 1 287 291 292 293 expr=add(@0,mul(@1,@2)) #287=(1,257,384)f32 #291=(1,257,384)f32 #292=(1,1,384)f32 #293=(1,257,384)f32
+nn.LayerNorm             ln_22                    1 1 293 294 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=293 #293=(1,257,384)f32 #294=(1,257,384)f32
+nn.Linear                vit.blocks.11.attn.qkv   1 1 294 295 bias=True in_features=384 out_features=1152 @bias=(1152)f32 @weight=(1152,384)f32 #294=(1,257,384)f32 #295=(1,257,1152)f32
+torch.tensor_split       Tensor.slice_249         1 3 295 296 297 298 dim=2 indices=(384,768) #295=(1,257,1152)f32 #296=(1,257,384)f32 #297=(1,257,384)f32 #298=(1,257,384)f32
+Tensor.reshape           Tensor.reshape_127       1 1 296 299 shape=(1,257,6,64) $input=296 #296=(1,257,384)f32 #299=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_57        1 1 299 300 dims=(0,2,1,3) $input=299 #299=(1,257,6,64)f32 #300=(1,6,257,64)f32
+pnnx.Expression          pnnx_expr_53             1 1 300 301 expr=mul(@0,0.125) #300=(1,6,257,64)f32 #301=(1,6,257,64)f32
+Tensor.reshape           Tensor.reshape_128       1 1 297 302 shape=(1,257,6,64) $input=297 #297=(1,257,384)f32 #302=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_129       1 1 298 303 shape=(1,257,6,64) $input=298 #298=(1,257,384)f32 #303=(1,257,6,64)f32
+Tensor.permute           Tensor.permute_59        1 1 303 304 dims=(0,2,1,3) $input=303 #303=(1,257,6,64)f32 #304=(1,6,257,64)f32
+Tensor.permute           torch.transpose_146      1 1 302 305 dims=(0,2,3,1) $input=302 #302=(1,257,6,64)f32 #305=(1,6,64,257)f32
+torch.matmul             torch.matmul_279         2 1 301 305 306 $input=301 $other=305 #301=(1,6,257,64)f32 #305=(1,6,64,257)f32 #306=(1,6,257,257)f32
+F.softmax                F.softmax_292            1 1 306 307 dim=-1 $input=306 #306=(1,6,257,257)f32 #307=(1,6,257,257)f32
+torch.matmul             torch.matmul_280         2 1 307 304 308 $input=307 $other=304 #307=(1,6,257,257)f32 #304=(1,6,257,64)f32 #308=(1,6,257,64)f32
+Tensor.permute           Tensor.permute_60        1 1 308 309 dims=(0,2,1,3) $input=308 #308=(1,6,257,64)f32 #309=(1,257,6,64)f32
+Tensor.reshape           Tensor.reshape_130       1 1 309 310 shape=(1,257,384) $input=309 #309=(1,257,6,64)f32 #310=(1,257,384)f32
+nn.Linear                vit.blocks.11.attn.proj  1 1 310 311 bias=True in_features=384 out_features=384 @bias=(384)f32 @weight=(384,384)f32 #310=(1,257,384)f32 #311=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2637           0 1 312 @data=(1,1,384)f32 #312=(1,1,384)f32
+pnnx.Expression          pnnx_expr_12             3 1 293 311 312 313 expr=add(@0,mul(@1,@2)) #293=(1,257,384)f32 #311=(1,257,384)f32 #312=(1,1,384)f32 #313=(1,257,384)f32
+nn.LayerNorm             ln_23                    1 1 313 314 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=313 #313=(1,257,384)f32 #314=(1,257,384)f32
+nn.Linear                vit.blocks.11.mlp.fc1    1 1 314 315 bias=True in_features=384 out_features=1536 @bias=(1536)f32 @weight=(1536,384)f32 #314=(1,257,384)f32 #315=(1,257,1536)f32
+nn.GELU                  vit.blocks.11.mlp.act    1 1 315 316 #315=(1,257,1536)f32 #316=(1,257,1536)f32
+nn.Linear                vit.blocks.11.mlp.fc2    1 1 316 317 bias=True in_features=1536 out_features=384 @bias=(384)f32 @weight=(384,1536)f32 #316=(1,257,1536)f32 #317=(1,257,384)f32
+pnnx.Attribute           pnnx_fold_2651           0 1 318 @data=(1,1,384)f32 #318=(1,1,384)f32
+pnnx.Expression          pnnx_expr_7              3 1 313 317 318 319 expr=add(@0,mul(@1,@2)) #313=(1,257,384)f32 #317=(1,257,384)f32 #318=(1,1,384)f32 #319=(1,257,384)f32
+nn.LayerNorm             ln_24                    1 1 319 320 elementwise_affine=True eps=1.000000e-6 normalized_shape=(384) @bias=(384)f32 @weight=(384)f32 $input=319 #319=(1,257,384)f32 #320=(1,257,384)f32
+Tensor.select            Tensor.select_147        1 1 320 321 dim=1 index=0 $input=320 #320=(1,257,384)f32 #321=(1,384)f32
+nn.Linear                head                     1 1 321 322 bias=True in_features=384 out_features=3 @bias=(3)f32 @weight=(3,384)f32 #321=(1,384)f32 #322=(1,3)f32
+pnnx.Output              pnnx_output_0            1 0 322 #322=(1,3)f32
